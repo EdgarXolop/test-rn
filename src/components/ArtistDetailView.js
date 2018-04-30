@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import {firebaseDatabase} from '../firebase-config'
+import {firebaseDatabase,firebaseAuth} from '../firebase-config'
 
 import ArtistBox from './ArtistBox'
 import CommentList from './CommentList'
@@ -35,7 +35,6 @@ export default class ArtistDetailView extends Component {
     this.setState({
       comments: this.state.comments.concat(comment)
     })
-    this.addNewComment();
     this.setState({
       text: ''
     })
@@ -44,12 +43,15 @@ export default class ArtistDetailView extends Component {
 
   handleSend = () =>{
     const {text} = this.state;
+    const {uid,photoURL } = firebaseAuth.currentUser;
     const artistCommentsRef = this.getArtistCommentsRef();
     var newCommentRef = artistCommentsRef.push();
-
     newCommentRef.set({
-      text
+      text,
+      userPhoto: photoURL,
+      uid
     });
+    this.addNewComment()
   }
   
   addNewComment = () => {

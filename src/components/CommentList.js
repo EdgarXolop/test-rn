@@ -34,7 +34,7 @@ export default class CommentList extends Component {
     return (      
         <FlatList 
             data={this.state.comments}  
-            renderItem={({item}) => <CommentBox text={item.text}/>}
+            renderItem={({item}) => <CommentBox text={item.text} avatar={item.userPhoto}/>}
             keyExtractor={(i, index) => index.toString()} />
     );
   }
