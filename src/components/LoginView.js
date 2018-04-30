@@ -8,9 +8,20 @@ import {
 } from 'react-native';
 
 import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
-import Icon from 'react-native-vector-icons/Ionicons';
+import {Actions} from 'react-native-router-flux'
+//import * as firebase from "firebase";
 
-var LoginBehavior = {
+const config = {
+  apiKey: "AIzaSyAD2ovljJrSBlamzSI7Hi_nR6E3bsaKDYY",
+  authDomain: "foobarmusic-9190f.firebaseapp.com",
+  databaseURL: "https://foobarmusic-9190f.firebaseio.com",
+  projectId: "foobarmusic-9190f",
+  storageBucket: "foobarmusic-9190f.appspot.com",
+  messagingSenderId: "442038367374"
+};
+//firebase.initializeApp(config);
+
+const LoginBehavior = {
   'ios': FBLoginManager.LoginBehaviors.Browser,
   'android': FBLoginManager.LoginBehaviors.Native
 }
@@ -18,8 +29,11 @@ var LoginBehavior = {
 export default class LoginView extends Component {
 
 
-  login(data){
-    console.warn(data)
+  login(data,error){
+    if(!error){
+      console.warn(data);
+      Actions.home();
+    }
   }
 
   render() {
