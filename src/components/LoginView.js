@@ -8,8 +8,8 @@ import {
 } from 'react-native';
 
 import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
-import {Actions} from 'react-native-router-flux'
-//import * as firebase from "firebase";
+import {Actions} from 'react-native-router-flux';
+import firebase from "firebase";
 
 const config = {
   apiKey: "AIzaSyAD2ovljJrSBlamzSI7Hi_nR6E3bsaKDYY",
@@ -19,7 +19,11 @@ const config = {
   storageBucket: "foobarmusic-9190f.appspot.com",
   messagingSenderId: "442038367374"
 };
-//firebase.initializeApp(config);
+
+firebase.initializeApp(config);
+
+const {FacebookAuthProvider} = firebase.auth;
+const firebaseAuth = firebase.auth();
 
 const LoginBehavior = {
   'ios': FBLoginManager.LoginBehaviors.Browser,
@@ -28,11 +32,24 @@ const LoginBehavior = {
 
 export default class LoginView extends Component {
 
+  authenticateUser=(accessToken)=>{
+    const credential = FacebookAuthProvider.credential(accessToken);
 
-  login(data,error){
+    console.warn(credential);
+
+    firebaseAuth.signInWithCredential(credential).then(function(user) {
+      console.warn("Sign In Success", user);
+      var currentUser = user;
+      
+    }).catch(function(error) {
+      console.warn("Sign In Error", error);
+    });
+  }
+
+  login = (data,error)=>{
     if(!error){
-      console.warn(data);
-      Actions.home();
+      //console.warn(data.credentials);
+      this.authenticateUser(data.credentials.token)
     }
   }
 
