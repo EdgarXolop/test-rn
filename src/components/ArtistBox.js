@@ -14,21 +14,28 @@ export default class ArtistBox extends Component{
 
   state = {
     liked: false,
-    likeCount: 0
+    likeCount: 0,
+    commentCount: 0
   }
 
   componentWillMount(){
-    const {uid} = firebaseAuth.currentUser
+    this.getArtistRef().on('value',this.loadSnapshot)
+  }
 
-    this.getArtistRef().on('value',snapshot =>{
-      const artist = snapshot.val();
-      if(artist){
-        this.setState({
-          likeCount: artist.likeCount,
-          liked:artist.likes && artist.likes[uid]
-        });
-      }
-    })
+  componentWillUnmount(){
+    this.getArtistRef().off('value',this.loadSnapshot)
+  }
+
+  loadSnapshot = snapshot =>{
+    const {uid} = firebaseAuth.currentUser
+    const artist = snapshot.val();
+    if(artist){
+      this.setState({
+        commentCount: artist.commentCount ?artist.commentCount:0,
+        likeCount: artist.likeCount ?artist.likeCount:0,
+        liked:artist.likes && artist.likes[uid]
+      });
+    }
   }
 
   handleLike=()=>{
@@ -61,6 +68,7 @@ export default class ArtistBox extends Component{
       }
       return artist || {
         likeCount: 1,
+        commentCount: 0,
         likes:{
           [uid]: true
         }
@@ -94,7 +102,7 @@ export default class ArtistBox extends Component{
             <TouchableOpacity>
               <Icon name="ios-chatboxes-outline" size={30} color="grey" />
             </TouchableOpacity>
-            <Text style={styles.count}>{comments}</Text>
+            <Text style={styles.count}>{this.state.commentCount}</Text>
             </View>
         </View>
         </View>
