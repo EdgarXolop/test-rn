@@ -14,7 +14,7 @@ import {Scene, Stack, Router} from 'react-native-router-flux'
 
 import HomeView from './src/components/HomeView'
 import ArtistDetailView from './src/components/ArtistDetailView'
-//import Login from './src/components/LoginView'
+import Login from './src/components/LoginView'
 
 
 export default class App extends Component {
@@ -23,6 +23,7 @@ export default class App extends Component {
     return (
       <Router>
         <Stack key="root">
+          <Scene key="Login" component={Login} hideNavBar={true}/>
           <Scene key="home" component={HomeView} hideNavBar={true}/>
           <Scene key="artistDetail" component={ArtistDetailView} hideNavBar={false}/>
         </Stack>

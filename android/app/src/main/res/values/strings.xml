@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">FoobarMusic</string>
+    <string name="fb_app_id">160932184601661</string>
+    <string name="fb_login_protocol_scheme">fb160932184601661</string>
 </resources>
